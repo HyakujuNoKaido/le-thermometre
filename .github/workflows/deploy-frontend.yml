@@ -5,6 +5,10 @@ on:
     branches:
       - main
 
+# AJOUTE CE BLOC PERMISSIONS
+permissions:
+  contents: write
+
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
