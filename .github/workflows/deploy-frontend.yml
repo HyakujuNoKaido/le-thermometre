@@ -1,38 +1,24 @@
-name: Deploy Frontend to GitHub Pages
+name: Deploy Frontend
 
 on:
   push:
     branches:
       - main
-    paths:
-      - 'frontend/**'
 
 jobs:
-  deploy:
+  build-and-deploy:
     runs-on: ubuntu-latest
-    
-    defaults:
-      run:
-        working-directory: ./frontend
-
     steps:
-      - name: Checkout du code
-        uses: actions/checkout@v3
+      - name: Checkout
+        uses: actions/checkout@v4
 
-      - name: Installation de Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: 18
-          cache: 'npm'
-          cache-dependency-path: ./frontend/package-lock.json
+      - name: Install and Build
+        run: |
+          cd frontend
+          npm install
+          npm run build
 
-      - name: Installation des dépendances
-        run: npm install
-
-      - name: Build de l'application React
-        run: npm run build
-
-      - name: Déploiement sur GitHub Pages
+      - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
