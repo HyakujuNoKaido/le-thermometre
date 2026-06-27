@@ -1,11 +1,9 @@
 name: Deploy Frontend to GitHub Pages
 
-# Déclenche l'action à chaque "push" sur la branche principale (main)
 on:
   push:
     branches:
       - main
-    # Ne lance le build QUE si des fichiers du frontend ont été modifiés
     paths:
       - 'frontend/**'
 
@@ -31,7 +29,7 @@ jobs:
       - name: Installation des dépendances
         run: npm install
 
-      - name: Build de l'application React (Vite)
+      - name: Build de l'application React
         run: npm run build
 
       - name: Déploiement sur GitHub Pages
@@ -39,4 +37,3 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./frontend/dist
-```
