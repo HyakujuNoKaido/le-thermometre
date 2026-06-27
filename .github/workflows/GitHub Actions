@@ -1,0 +1,42 @@
+name: Deploy Frontend to GitHub Pages
+
+Déclenche l'action à chaque "push" sur la branche principale (main)
+
+on:
+push:
+branches:
+- main
+# Ne lance le build QUE si des fichiers du frontend ont été modifiés
+paths:
+- 'frontend/'
+
+jobs:
+deploy:
+runs-on: ubuntu-latest
+
+defaults:
+  run:
+    working-directory: ./frontend
+
+steps:
+  - name: Checkout du code
+    uses: actions/checkout@v3
+
+  - name: Installation de Node.js
+    uses: actions/setup-node@v3
+    with:
+      node-version: 18
+      cache: 'npm'
+      cache-dependency-path: ./frontend/package-lock.json
+
+  - name: Installation des dépendances
+    run: npm install
+
+  - name: Build de l'application React (Vite)
+    run: npm run build
+
+  - name: Déploiement sur GitHub Pages
+    uses: peaceiris/actions-gh-pages@v3
+    with:
+      github_token: ${{ secrets.GITHUB_TOKEN }}
+      publish_dir: ./frontend/dist
